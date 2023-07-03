@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../images/icon.png" type="image/png">
+  <title>CineFetch - Movies</title>
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="../static/assets/css/main.css">
+  <link rel="stylesheet" href="../static/assets/css/media_query.css">
+
+  <!--
+    - google font link
+  -->
+  <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
+</head>
+
+
+<body>
+
+    <!--
+      - main container
+    -->
+    <div class="container">
+  
+      <!--
+        - #HEADER SECTION
+      -->
+  
+      <header class="">
+        <div class="navbar">
+  
+          <!--
+            - menu button for small screen
+          -->
+
+
+          <button class="navbar-menu-btn">
+            <span class="one"></span>
+            <span class="two"></span>
+            <span class="three"></span>
+          </button> 
+  
+  
+          <a href="{{ url_for('index') }}" class="navbar-brand">
+            <img src="../static/assets/images/logo4.png" alt="">
+          </a>
+  
+           <!--
+          - navbar navigation
+        -->
+
+        <nav class="">
+          <ul class="navbar-nav">
+
+            <li> <a href="#" class="navbar-link">Home</a> </li>
+            <li> <a href="{{ url_for('haha') }}" class="navbar-link">4K Movies</a> </li>
+
+          </ul>
+        </nav>
+  
+          <!--
+            - search and sign-in
+          -->
+  
+          <div class="navbar-actions">
+  
+            <form action="" class="navbar-form2" onsubmit="event.preventDefault();">
+              <input type="text" name="search" id="search-item" placeholder="I'm looking for..." class="navbar-form-search" onkeyup="searchFun()">
+            </form>
+             
+            <!--
+              - search button for small screen
+            -->
+
+          </div>
+  
+        </div>
+      </header>
+
+
+      <div id="movies-section">
+      <h2 class="okheader" 
+      >All MOVIES.</h2>
+      </div>
+
+  
+        <!--
+          - #MOVIES SECTION
+        -->
+        <section class="movies">
+  
+          <!-- Existing HTML code... -->
+
+          <div id="search-message" style="
+          display: none;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+       font-size: var(--section-heading);
+        margin-top: 100px;
+        margin-bottom:20px;
+        text-align: center;
+          ">
+            <p>Movie Not Found</p>
+          </div>
+
+<!-- Inside the movies grid -->
+<!-- Inside the movies grid -->
+<div class="movies-grid" id="movie-list">
+  <tr>
+    {% for movie_key, movie_data in movies.items() %}
+      <div class="movie-card">
+        <a href="{{ movie_data.get('route', '') }}">
+          <div class="card-head">
+            <img src="{{ movie_data.get('img', '') }}" alt="" class="card-img">
+            <div class="card-overlay">
+              <!-- Card overlay content -->
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{ movie_data.get('name', '') }}</h3>
+            <div class="card-info">
+              <span class="genre">{{ movie_data.get('genre', '') }}</span>
+              <span class="year">{{ movie_data.get('year', '') }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </tr>
+</div>
+
+
+        </section>
+  
+        <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="../js/top.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  
+  <script>
+
+    // Search Button
+
+    function searchFun() {
+  const input = document.getElementById("search-item");
+  const filter = input.value.toUpperCase();
+  const movieCards = document.getElementsByClassName("movie-card");
+  const searchMessage = document.getElementById("search-message");
+  const moviesSection = document.getElementById("movies-section");
+
+  let moviesFound = false; // Track if any movies are found
+
+  for (let i = 0; i < movieCards.length; i++) {
+    const title = movieCards[i].querySelector(".card-title");
+    const genre = movieCards[i].querySelector(".genre");
+
+    if (title.innerText.toUpperCase().indexOf(filter) > -1 || genre.innerText.toUpperCase().indexOf(filter) > -1) {
+      movieCards[i].style.display = "";
+      moviesFound = true;
+    } else {
+      movieCards[i].style.display = "none";
+    }
+  }
+
+  // Show/hide the "Invalid search" message and "All 4K MOVIES" heading container
+  if (moviesFound) {
+    searchMessage.style.display = "none";
+    moviesSection.style.display = "block";
+  } else {
+    searchMessage.style.display = "block";
+    moviesSection.style.display = "none";
+  }
+}
+
+    
+  </script>
+
+
+      </body>
